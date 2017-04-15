@@ -2,6 +2,7 @@
  * TODO: Each time slot event should take up the full width and vertically stack
  * on top of each other. On larger screens, when there are multiple events for
  * a time slot, they should be evenly divided on the same row
+ * COMPLETE
  */
 .time-slot {
     display: flex;
@@ -12,7 +13,11 @@
     /**
      * TODO: Figure out how not to have a bottom border on the last time-slot
      * which causes a double border
+     * COMPLETE
      */
+}
+.time-slot:last-child {
+    border-bottom: none;
 }
 .time-slot__hour-label {
     width: 4rem;
@@ -27,6 +32,8 @@
 .time-slot__events {
     padding: 0.5rem;
     flex: 1;
+    display: flex;
+    flex-direction: column;
 
     overflow: hidden;
 }
@@ -37,4 +44,10 @@
 
 @media screen and (min-width: 50rem) {
     /* Override styles for larger screens here */
+    .time-slot__events {
+        flex-direction: row;
+    }
+    .time-slot__event {
+        width: 100%;
+    }
 }

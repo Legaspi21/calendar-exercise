@@ -3,6 +3,7 @@
  * TODO: Past events should display faded-out
  */
 .time-slot-event {
+    width: 100%;
     display: block;
     cursor: pointer;
     border: 1px solid transparent;
