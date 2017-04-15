@@ -20,9 +20,6 @@ export default class EventDetailOverlay extends PureComponent {
             }
         });
 
-        window.addEventListener('click', (e) => {
-            console.log(e.target);
-        });
         this._setLabelColor();
     }
 
