@@ -28,7 +28,7 @@ export default class Calendar extends PureComponent {
                         events={filteredEvents}
                         onSelectEvent={onSelectEvent}
                     />
-                )
+                );
             });
     }
 
