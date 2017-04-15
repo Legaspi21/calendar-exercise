@@ -1,12 +1,14 @@
 /*
  * TODO: Time slot events should have rounded corners
  * TODO: Past events should display faded-out
+ * COMPLETED
  */
 .time-slot-event {
     width: 100%;
     display: block;
     cursor: pointer;
     border: 1px solid transparent;
+    border-radius: 8%;
     padding: 0.5rem;
     font-size: 1rem;
     overflow: hidden;
@@ -39,4 +41,7 @@
 .time-slot-event--shamrock {
     background-color: #009e60;
     border-color: #003800;
+}
+.time-slot-event--past {
+    opacity: 0.2;
 }
