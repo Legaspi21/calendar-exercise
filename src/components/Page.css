@@ -1,10 +1,15 @@
 /*
  * TODO: page needs a gradient from white (top) to light gray (bottom)
+ * COMPLETED
  * TODO: On narrow screens the background shouldn't scroll when detail overlay is shown
  */
 
 .page {
     margin: 1rem;
+    background: linear-gradient(to bottom, white , lightgray);
+    overflow: hidden;
+    border-bottom-left-radius: 2%;
+    border-bottom-right-radius: 2%;
 }
 .page__header {
     margin-bottom: 1rem;
