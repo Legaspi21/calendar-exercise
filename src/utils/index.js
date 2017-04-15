@@ -1,7 +1,11 @@
-const _HOUR_DISPLAY_MAP = [
-    '12AM', '1AM', '2AM', '3AM', '4AM', '5AM', '6AM', '7AM', '8AM', '9AM', '10AM', '11AM',
-    '12PM', '1PM', '2PM', '3PM', '4PM', '5PM', '6PM', '7PM', '8PM', '9PM', '10PM', '11PM',
-]
+const _MONTHS = [
+    'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
+    'October', 'November', 'December',
+];
+
+const _DAYS_OF_THE_WEEK = [
+    'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',
+];
 
 /**
  * Given a list of events and a date, filter the events down to those that
@@ -12,9 +16,18 @@ const _HOUR_DISPLAY_MAP = [
  */
 export const filterEventsByDay = (events, timestamp) => {
     // TODO: Implement day filtering!
-
-    return events;
-}
+    // COMPLETE
+    return (
+        events.filter(({start}) => {
+            let eventDate = new Date(start);
+            let currentDate = new Date(timestamp);
+    
+            return (
+                eventDate.getMonth() === currentDate.getMonth() && eventDate.getDate() === currentDate.getDate()
+            );
+        })
+    );
+};
 
 /**
  * Given a list of events and an hour number, filter the events down to those that
@@ -37,10 +50,15 @@ export const filterEventsByHour = (events, hour) => (
  */
 export const getDisplayDate = (timestamp) => {
     let date = new Date(timestamp);
+    let month = _MONTHS[date.getMonth()];
+    let year = date.getFullYear();
+    let calendarDate = date.getDate();
+    let weekday = _DAYS_OF_THE_WEEK[date.getDay()];
+    let formattedDate = `${weekday}, ${month} ${calendarDate}, ${year}`;
 
     // TODO: Format the date like: "Tuesday, April 11, 2017"
-
-    return date.toString();
+    // COMPLETE
+    return formattedDate;
 };
 
 /**
@@ -49,7 +67,14 @@ export const getDisplayDate = (timestamp) => {
  * @returns {string}
  */
 // TODO: Implement using a more programmatic approach instead of map
-export const getDisplayHour = (hour) => _HOUR_DISPLAY_MAP[hour]
+// COMPLETE
+export const getDisplayHour = (hour) => {
+    if (hour === 0 || hour === 12) {
+        return `12${hour === 0 ? 'AM' : 'PM'}`;
+    }
+
+    return `${hour % 12}${hour < 12 ? 'AM' : 'PM'}`;
+};
 
 /**
  * Given a list of events, returns the event object whose id matches the specified eventId
@@ -59,4 +84,4 @@ export const getDisplayHour = (hour) => _HOUR_DISPLAY_MAP[hour]
  */
 export const getEventFromEvents = (events, eventId) => (
     events.find(({id}) => id === eventId)
-)
+);
