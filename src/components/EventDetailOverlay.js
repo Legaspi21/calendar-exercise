@@ -1,6 +1,7 @@
 import React, {PureComponent, PropTypes} from 'react';
 import {EVENT_PROP_TYPE} from './constants';
 import {getDisplayDate, getDisplayHour} from '../utils';
+import ReactDOM from 'react-dom';
 
 import './EventDetailOverlay.css';
 
@@ -8,6 +9,12 @@ export default class EventDetailOverlay extends PureComponent {
     static propTypes = {
         event: EVENT_PROP_TYPE.isRequired,
         onClose: PropTypes.func.isRequired
+    }
+
+    componentWillMount() {
+        document.addEventListener('click', (e) => {
+            ReactDOM.findDOMNode(this).contains(e.target) ? null : this.props.onClose();
+        }, {once: false});
     }
 
     componentDidMount() {
@@ -26,6 +33,13 @@ export default class EventDetailOverlay extends PureComponent {
     componentDidUpdate() {
         this._setLabelColor();
 
+    }
+
+    componentWillUnmount() {
+        // TODO: Properly remove event listener
+        document.removeEventListener('click', (e) => {
+            ReactDOM.findDOMNode(this).contains(e.target) ? null : this.props.onClose();
+        }, {once: false});
     }
 
     _setLabelColor() {

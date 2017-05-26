@@ -1,12 +1,4 @@
-const _MONTHS = [
-    'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
-    'October', 'November', 'December',
-];
-
-const _DAYS_OF_THE_WEEK = [
-    'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',
-];
-
+import {MILLISECONDS_DAY} from './constants';
 /**
  * Given a list of events and a date, filter the events down to those that
  * fall on the same day as the date
@@ -19,12 +11,10 @@ export const filterEventsByDay = (events, timestamp) => {
     // COMPLETE
     return (
         events.filter(({start}) => {
-            let eventDate = new Date(start);
-            let currentDate = new Date(timestamp);
-    
-            return (
-                eventDate.getMonth() === currentDate.getMonth() && eventDate.getDate() === currentDate.getDate()
-            );
+            let currentDateAtMidnight = new Date(timestamp).setHours(0, 0, 0, 0);
+            let eventDateAtMidnight = new Date(start).setHours(0, 0, 0, 0);
+
+            return currentDateAtMidnight === eventDateAtMidnight;
         })
     );
 };
@@ -50,15 +40,16 @@ export const filterEventsByHour = (events, hour) => (
  */
 export const getDisplayDate = (timestamp) => {
     let date = new Date(timestamp);
-    let month = _MONTHS[date.getMonth()];
-    let year = date.getFullYear();
-    let calendarDate = date.getDate();
-    let weekday = _DAYS_OF_THE_WEEK[date.getDay()];
-    let formattedDate = `${weekday}, ${month} ${calendarDate}, ${year}`;
+    const options = {
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric'
+    };
 
     // TODO: Format the date like: "Tuesday, April 11, 2017"
     // COMPLETE
-    return formattedDate;
+    return date.toLocaleString('en-US', options);
 };
 
 /**
@@ -85,3 +76,4 @@ export const getDisplayHour = (hour) => {
 export const getEventFromEvents = (events, eventId) => (
     events.find(({id}) => id === eventId)
 );
+

@@ -1,9 +1,8 @@
-import DATA_SET from '../utils/data';
-import {DAY_CHANGED, EVENT_SELECTED} from '../actions/types';
+import {DAY_CHANGED, EVENT_SELECTED, FETCH_EVENTS} from '../actions/types';
 
 const INITIAL_STATE = {
     // unfiltered list of events
-    events: DATA_SET,
+    events: [],
     
     // The currently selected day represented by numerical timestamp 
     day: Date.now(),
@@ -14,8 +13,14 @@ const INITIAL_STATE = {
 
 export default function(state = INITIAL_STATE, action) {
     switch(action.type) {
+        case FETCH_EVENTS:
+            return {...state, events: action.payload};
         case DAY_CHANGED:
-            return {...state, day: action.payload};
+            let {day} = state;
+            let currentDate = new Date(day);
+            let newDay = currentDate.setDate(currentDate.getDate() + action.payload);
+            
+            return {...state, day: newDay};
         case EVENT_SELECTED:
             return {...state, selectedEventId: action.payload};
         default:

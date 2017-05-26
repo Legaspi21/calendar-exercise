@@ -1,10 +1,9 @@
 import React, {PureComponent} from 'react';
 import {connect} from 'react-redux';
-import {dayChanged, eventSelected} from '../actions';
+import {dayChanged, eventSelected, fetchEvents} from '../actions';
 import Calendar from './Calendar';
 import EventDetailOverlay from './EventDetailOverlay';
 import {filterEventsByDay, getEventFromEvents, getDisplayDate} from '../utils';
-// import DATA_SET from '../utils/data';
 
 import './Page.css';
 
@@ -27,37 +26,24 @@ const DayNavigator = ({dateDisplay, onPrev, onNext}) => {
 };
 
 class Page extends PureComponent {
+    componentWillMount() {
+        this.props.fetchEvents();
+    }
     
     _handleSelectEvent(selectedEventId) {
-        // this.setState({selectedEventId});
         this.props.eventSelected(selectedEventId);
     }
 
     _handleEventDetailOverlayClose() {
-        // this.setState({selectedEventId: undefined});
         this.props.eventSelected({selectedEventId: undefined});
     }
 
     _handlePrev() {
-        // TODO: Update this.state.day to go back 1 day so previous button works
-        // COMPLETE
-        let {day} = this.props;
-        let currentDate = new Date(day);
-        let previousDay = currentDate.setDate(currentDate.getDate() - 1);
-        
-        // this.setState({day: previousDay});
-        this.props.dayChanged(previousDay);
+        this.props.dayChanged(-1);
     }
 
     _handleNext() {
-        // TODO: Update this.state.day to go forward 1 day so next button works
-        // COMPLETE
-        let {day} = this.props;
-        let currentDate = new Date(day);
-        let nextDay = currentDate.setDate(currentDate.getDate() + 1);
-
-        // this.setState({day: nextDay});
-        this.props.dayChanged(nextDay);
+        this.props.dayChanged(1);
     }
 
     render() {
@@ -99,5 +85,6 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, { 
     dayChanged, 
-    eventSelected
+    eventSelected,
+    fetchEvents
 })(Page);

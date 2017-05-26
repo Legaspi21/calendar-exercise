@@ -1,4 +1,5 @@
 import React, {PureComponent, PropTypes} from 'react';
+import {Link} from 'react-router-dom';
 import {EVENT_PROP_TYPE} from './constants';
 import {MILLISECONDS_HOUR} from '../utils/constants';
 
@@ -12,7 +13,7 @@ export default class TimeSlotEvent extends PureComponent {
 
     render() {
         let {
-            event: {title, color, start},
+            event: {title, color, start, id},
             onSelect,
         } = this.props;
 
@@ -24,12 +25,14 @@ export default class TimeSlotEvent extends PureComponent {
         };
 
         return (
-            <button 
-                className={`time-slot-event time-slot-event--${color} ${_isPastEvent() ? 'time-slot-event--past' : ''}`} 
-                onClick={onSelect}
-            >
-                {title}
-            </button>
+            <Link to={`/event/${id}`}>
+                <button 
+                    className={`time-slot-event time-slot-event--${color} ${_isPastEvent() ? 'time-slot-event--past' : ''}`} 
+                    onClick={onSelect}
+                >
+                    {title}
+                </button>
+            </Link>
         );
     }
 }
