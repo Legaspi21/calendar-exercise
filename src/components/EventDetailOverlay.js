@@ -11,7 +11,7 @@ export default class EventDetailOverlay extends PureComponent {
         onClose: PropTypes.func.isRequired
     }
 
-    componentWillMount() {
+    componentWillMount() {      
         document.addEventListener('click', (e) => {
             ReactDOM.findDOMNode(this).contains(e.target) ? null : this.props.onClose();
         }, {once: false});

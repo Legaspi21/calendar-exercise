@@ -50,3 +50,28 @@
 .page__next-day::after {
     content: '▶︎';
 }
+
+.page__color-picker {
+    height: 15px;
+    width: 15px;
+    margin-left: 5px;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.page__color-picker--sky {
+    background-color: #d1e8f0;
+    border-color: #307992;
+}
+.page__color-picker--canary {
+    background-color: #fcf69a;
+    border-color: #938a04;
+}
+.page__color-picker--rose {
+    background-color: #fcbbd2;
+    border-color: #b00843;
+}
+.page__color-picker--shamrock {
+    background-color: #009e60;
+    border-color: #003800;
+}

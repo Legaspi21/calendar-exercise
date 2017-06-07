@@ -1,9 +1,15 @@
 import React, {PureComponent} from 'react';
 import {connect} from 'react-redux';
-import {dayChanged, eventSelected, fetchEvents} from '../actions';
+import {dayChanged, eventSelected, fetchEvents, todaySelected, colorSelected} from '../actions';
 import Calendar from './Calendar';
 import EventDetailOverlay from './EventDetailOverlay';
-import {filterEventsByDay, getEventFromEvents, getDisplayDate} from '../utils';
+import {
+    filterEventsByDay, 
+    getEventFromEvents, 
+    getDisplayDate, 
+    filterEventsByColor, 
+    colorsSet
+} from '../utils';
 
 import './Page.css';
 
@@ -37,19 +43,36 @@ class Page extends PureComponent {
     _handleEventDetailOverlayClose() {
         this.props.eventSelected({selectedEventId: undefined});
     }
-
-    _handlePrev() {
-        this.props.dayChanged(-1);
+    
+    _handleClick(value) {
+        this.props.dayChanged(value);
     }
 
-    _handleNext() {
-        this.props.dayChanged(1);
+    _handleTodayButtonClick() {
+        this.props.todaySelected();
+    }
+
+    _handleColorPickerButtonClick(selectedColor) {
+        this.props.colorSelected(selectedColor);
+    }
+
+    _renderColorPicker(colors) {
+        return colors.map((color) => (
+            <button 
+                className={`page__color-picker page__color-picker--${color}`}
+                // style={{background: `${color}`}}
+                onClick={this._handleColorPickerButtonClick.bind(this, color)}
+                key={color} 
+            />
+        ));
     }
 
     render() {
-        let {events, day, selectedEventId} = this.props;
+        let {events, day, selectedEventId, selectedColor} = this.props;
         let filteredEvents = filterEventsByDay(events, day);
+        let filteredEventsByColor = filterEventsByColor(filteredEvents, selectedColor);
         let selectedEvent = getEventFromEvents(events, selectedEventId);
+        let colors = colorsSet(events);
         let eventDetailOverlay;
 
         if (selectedEvent) {
@@ -61,15 +84,25 @@ class Page extends PureComponent {
             );
         }
 
+        if (selectedColor) {
+            filteredEvents = filteredEventsByColor;
+        }
+
         return (
             <div className="page">
                 <header className="page__header">
+                    <button className="page__today-button" onClick={this._handleTodayButtonClick.bind(this)}>Today</button>
                     <h1 className="page__title">Daily Agenda</h1>
                 </header>
+                <button 
+                    className="page__color-picker"
+                    onClick={this._handleColorPickerButtonClick.bind(this, null)}
+                />
+                {this._renderColorPicker(colors)}
                 <DayNavigator
                     dateDisplay={getDisplayDate(day)}
-                    onPrev={this._handlePrev.bind(this)}
-                    onNext={this._handleNext.bind(this)}
+                    onPrev={this._handleClick.bind(this, -1)}
+                    onNext={this._handleClick.bind(this, 1)}
                 />
                 <Calendar events={filteredEvents} onSelectEvent={this._handleSelectEvent.bind(this)} />
                 {eventDetailOverlay}
@@ -79,12 +112,15 @@ class Page extends PureComponent {
 }
 
 const mapStateToProps = (state) => {
-    const {events, day, selectedEventId} = state.page;
-    return {events, day, selectedEventId};
+    const {events, day, selectedEventId, selectedColor} = state.page;
+
+    return {events, day, selectedEventId, selectedColor};
 };
 
 export default connect(mapStateToProps, { 
     dayChanged, 
     eventSelected,
-    fetchEvents
+    fetchEvents,
+    todaySelected,
+    colorSelected
 })(Page);

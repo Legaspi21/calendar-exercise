@@ -1,4 +1,3 @@
-import {MILLISECONDS_DAY} from './constants';
 /**
  * Given a list of events and a date, filter the events down to those that
  * fall on the same day as the date
@@ -6,17 +5,40 @@ import {MILLISECONDS_DAY} from './constants';
  * @param {Date} timestamp - The timestamp representing the day to match
  * @returns {array}
  */
-export const filterEventsByDay = (events, timestamp) => {
+export const filterEventsByDay = (events, timestamp) => (
     // TODO: Implement day filtering!
     // COMPLETE
-    return (
-        events.filter(({start}) => {
-            let currentDateAtMidnight = new Date(timestamp).setHours(0, 0, 0, 0);
-            let eventDateAtMidnight = new Date(start).setHours(0, 0, 0, 0);
+    events.filter(({start}) => {
+        let currentDateAtMidnight = new Date(timestamp).setHours(0, 0, 0, 0);
+        let eventDateAtMidnight = new Date(start).setHours(0, 0, 0, 0);
 
-            return currentDateAtMidnight === eventDateAtMidnight;
-        })
-    );
+        return currentDateAtMidnight === eventDateAtMidnight;
+    })
+);
+
+/**
+ * Given a list of events and a color, filter the events down to the given color
+ * @param {array} events - List of event objects
+ * @param {String} color - The currently selected color
+ * @returns {array}
+ */
+export const filterEventsByColor = (events = [], color) => (
+    events.filter((event = {}) => (event.color === color))
+);
+
+/**
+ * Given a list of events, create a set with unique colors
+ * @param {array} events - List of event objects
+ * @returns {array}
+ */
+export const colorsSet = (events = []) => {
+    const set = new Set(events.map((event = {}) => event.color));
+    const colors = [];
+
+    for(let color of set) {
+        colors.push(color);
+    }
+    return colors;
 };
 
 /**

@@ -1,4 +1,4 @@
-import {DAY_CHANGED, EVENT_SELECTED, FETCH_EVENTS} from '../actions/types';
+import {DAY_CHANGED, EVENT_SELECTED, FETCH_EVENTS, TODAY_SELECTED, COLOR_SELECTED} from '../actions/types';
 
 const INITIAL_STATE = {
     // unfiltered list of events
@@ -8,7 +8,10 @@ const INITIAL_STATE = {
     day: Date.now(),
 
     // The currently selected event in the agenda 
-    selectedEventId: undefined
+    selectedEventId: undefined,
+
+    // The currently selected color corresponding to events in the agenda
+    selectedColor: null
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -21,8 +24,12 @@ export default function(state = INITIAL_STATE, action) {
             let newDay = currentDate.setDate(currentDate.getDate() + action.payload);
             
             return {...state, day: newDay};
+        case TODAY_SELECTED:
+            return {...state, day: Date.now()};
         case EVENT_SELECTED:
             return {...state, selectedEventId: action.payload};
+        case COLOR_SELECTED:
+            return {...state, selectedColor: action.payload};
         default:
             return state;
     }
