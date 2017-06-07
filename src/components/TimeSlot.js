@@ -1,24 +1,13 @@
 import React, {PureComponent, PropTypes} from 'react';
+import {connect} from 'react-redux';
 import {EVENTS_PROP_TYPE} from './constants';
 import {getDisplayHour} from '../utils';
 import TimeSlotEvent from './TimeSlotEvent';
+import LineIndicator from './LineIndicator';
 
 import './TimeSlot.css';
 
-class LineIndicator extends PureComponent {
-    _currentLinePosition() {
-        let currentMinute = new Date(Date.now()).getMinutes();
-        let currentPosition = (currentMinute / 60) * 100;
-
-        return currentPosition;
-    }
-
-    render() {
-        return <hr className="line-indicator" style={{top: `${this._currentLinePosition()}%`}} />;
-    }
-}
-
-export default class TimeSlot extends PureComponent {
+class TimeSlot extends PureComponent {
     static propTypes = {
         hour: PropTypes.number.isRequired,
         events: EVENTS_PROP_TYPE.isRequired,
@@ -35,9 +24,17 @@ export default class TimeSlot extends PureComponent {
         ));
     }
 
+    _renderLineIndicator() {
+        const {day, hour} = this.props;
+        const todaysDate = new Date(Date.now()).setHours(0, 0, 0, 0);
+        const agendaDate = new Date(day).setHours(0, 0, 0, 0);
+        const currentHour = new Date(Date.now()).getHours();
+
+        return (currentHour === hour) && todaysDate === agendaDate ? <LineIndicator /> : null;
+    }
+
     render() {
         let {hour} = this.props;
-        let currentHour = new Date(Date.now()).getHours();
         let displayHour = getDisplayHour(hour);
 
         return (
@@ -46,10 +43,18 @@ export default class TimeSlot extends PureComponent {
                     {displayHour}
                 </span>
                 <div className="time-slot__events">
-                    {currentHour === hour ? <LineIndicator /> : null}
+                    {this._renderLineIndicator()}
                     {this._renderEvents()}
                 </div>
             </section>
         );
     }
 }
+
+const mapStateToProps = (state) => {
+    const {day} = state.page;
+
+    return {day};
+};
+
+export default connect(mapStateToProps)(TimeSlot);
