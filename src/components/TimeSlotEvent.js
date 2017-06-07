@@ -5,6 +5,8 @@ import {MILLISECONDS_HOUR} from '../utils/constants';
 
 import './TimeSlotEvent.css';
 
+
+
 export default class TimeSlotEvent extends PureComponent {
     static propTypes = {
         event: EVENT_PROP_TYPE.isRequired,
