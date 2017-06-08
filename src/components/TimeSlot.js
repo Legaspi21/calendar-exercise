@@ -26,9 +26,9 @@ class TimeSlot extends PureComponent {
 
     _renderLineIndicator() {
         const {day, hour} = this.props;
-        const todaysDate = new Date(Date.now()).setHours(0, 0, 0, 0);
+        const todaysDate = new Date().setHours(0, 0, 0, 0);
         const agendaDate = new Date(day).setHours(0, 0, 0, 0);
-        const currentHour = new Date(Date.now()).getHours();
+        const currentHour = new Date().getHours();
 
         return (currentHour === hour) && todaysDate === agendaDate ? <LineIndicator /> : null;
     }
